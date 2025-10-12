@@ -12,8 +12,21 @@ const createUserAPI = (fullName, email, password, phone) => {
     return axios.post(URL, data);
 }
 
-const updateUserAPI = () => {
+const updateUserAPI = (_id, username, email) => {
+    const URL = `/api/users/${_id}`;
+    const data = {
+         _id: _id,
+         username: username,
+         email: email
+        };
+    console.log('Making PUT request to:', URL);
+    console.log('Request data:', data);
+    return axios.put(URL, data);
+}
 
+const deleteUserAPI = (_id) => {
+    const URL = `/api/users/${_id}`;
+    return axios.delete(URL);
 }
 
 const fetchAllUsersAPI = () => {
@@ -21,4 +34,4 @@ const fetchAllUsersAPI = () => {
     return axios.get(URL);
 }
 
-export { createUserAPI, updateUserAPI, fetchAllUsersAPI }
+export { createUserAPI, updateUserAPI, fetchAllUsersAPI, deleteUserAPI }

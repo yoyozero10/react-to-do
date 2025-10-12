@@ -18,7 +18,7 @@ const UsersPage = () => {
     return (
         <div>
             <UserForm loadUsers={loadUsers} />
-            <USerTable users={users} />
+            <USerTable users={users} loadUsers={loadUsers} />
         </div>)
 }
 export default UsersPage;

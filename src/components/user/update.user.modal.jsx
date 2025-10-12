@@ -1,34 +1,53 @@
 import React from 'react';
 import { Modal } from 'antd';
-import { createUserAPI } from '../../services/api.service';
+import { createUserAPI, updateUserAPI } from '../../services/api.service';
 import { Input, notification } from 'antd';
 
 
-const UpdateUserModal = () => {
+const UpdateUserModal = (props) => {
+    const { isModalUpdateOpen, setIsModalUpdateOpen } = props;
     const [fullName, setFullName] = React.useState('');
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [phone, setPhone] = React.useState('');
-    const [isModalOpen, setIsModalOpen] = React.useState(true);
+    const { dataUpdate, setDataUpdate, loadUsers } = props;
+
+    React.useEffect(() => {
+        if (dataUpdate) {
+            setFullName(dataUpdate.username);
+            setEmail(dataUpdate.email);
+            setPhone(dataUpdate.phone);
+            setPassword(dataUpdate.password);
+
+        }
+    }, [dataUpdate]);
     const handleSubmit = async () => {
         try {
-            const res = await createUserAPIeUserAPI(fullName, email, password, phone);
+            console.log('Updating user with data:', {
+                _id: dataUpdate._id,
+                username: fullName,
+                email
+            });
+            const res = await updateUserAPI(dataUpdate._id, fullName, email);
+            console.log('Update response:', res);
             await loadUsers();
             if (res.data) {
                 notification.success({
                     message: 'Success',
-                    description: 'User created successfully',
+                    description: 'User updated successfully',
                 });
                 setFullName('');
                 setEmail('');
                 setPassword('');
                 setPhone('');
-                setIsModalOpen(false);
+                setIsModalUpdateOpen(false);
             }
         } catch (error) {
+            console.error('Update error:', error);
+            console.error('Error response:', error.response?.data);
             notification.error({
                 message: 'Error',
-                description: JSON.stringify(error.response?.data),
+                description: JSON.stringify(error.response?.data || error.message),
             });
         }
     }
@@ -36,13 +55,17 @@ const UpdateUserModal = () => {
         <Modal
             title="Update User"
             closable={{ 'aria-label': 'Custom Close Button' }}
-            open={isModalOpen}
+            open={isModalUpdateOpen}
             onOk={() => handleSubmit()}
-            onCancel={() => setIsModalOpen(false)}
+            onCancel={() => setIsModalUpdateOpen(false)}
             maskClosable={false}
             okText="Update"
         >
             <div>
+                <div>
+                    <span>Id</span>
+                    <Input disabled value={dataUpdate._id} />
+                </div>
                 <div>
                     <span>Full Name</span>
                     <Input onChange={(e) => setFullName(e.target.value)}
@@ -53,16 +76,12 @@ const UpdateUserModal = () => {
                     <Input onChange={(e) => setEmail(e.target.value)}
                         placeholder="Enter email" value={email} />
                 </div>
-                <div>
-                    <span>Password</span>
-                    <Input.Password onChange={(e) => setPassword(e.target.value)}
-                        placeholder="Enter password" value={password} />
-                </div>
-                <div>
+                {/* Phone field commented out as API doesn't support it */}
+                {/* <div>
                     <span>Phone</span>
                     <Input onChange={(e) => setPhone(e.target.value)}
                         placeholder="Enter your phone number" value={phone} />
-                </div>
+                </div> */}
             </div>
         </Modal>
     )
