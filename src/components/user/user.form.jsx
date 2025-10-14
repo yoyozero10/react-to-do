@@ -11,12 +11,13 @@ const UserForm = (props) => {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [phone, setPhone] = React.useState('');
+    const [avatar, setAvatar] = React.useState('');
     const [isModalOpen, setIsModalOpen] = React.useState(false);
     const { loadUsers } = props;
     const handleSubmit = async () => {
         
         try {
-            const res = await createUserAPI(fullName, email, password, phone);
+            const res = await createUserAPI(fullName, email, password, phone, avatar);
             await loadUsers();
             if (res.data) {
                 notification.success({
@@ -27,6 +28,7 @@ const UserForm = (props) => {
                 setEmail('');
                 setPassword('');
                 setPhone('');
+                setAvatar('');
                 setIsModalOpen(false);
             }
         } catch (error) {
@@ -74,6 +76,11 @@ const UserForm = (props) => {
                         <span>Phone</span>
                         <Input onChange={(e) => setPhone(e.target.value)}
                             placeholder="Enter your phone number" value={phone} />
+                    </div>
+                    <div>
+                        <span>Avatar URL</span>
+                        <Input onChange={(e) => setAvatar(e.target.value)}
+                            placeholder="Enter avatar URL" value={avatar} />
                     </div>
                 </div>
             </Modal>

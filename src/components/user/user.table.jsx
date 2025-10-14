@@ -1,5 +1,5 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Space, Table, Tag } from 'antd';
+import { Space, Table } from 'antd';
 import UpdateUserModal from './update.user.modal';
 import React from 'react';
 import ViewUserDetail from './view.user.detail';
@@ -8,11 +8,11 @@ import { deleteUserAPI } from '../../services/api.service';
 import { notification } from 'antd';
 
 const USerTable = (props) => {
-  const { users, loadUsers } = props;
+  const { page, limit, total, users, loadUsers, setPage, setLimit, handleTableChange } = props;
   const [isModalUpdateOpen, setIsModalUpdateOpen] = React.useState(false);
   const [dataUpdate, setDataUpdate] = React.useState({});
   const [dataDetail, setDataDetail] = React.useState({});
-  const [isDetailOpen, setIsDetailOpen] = React.useState(false);
+  const [isDetailOpen, setIsDetailOpen] = React.useState(false); 
 
   const handleDelete = async (_id) => {
     try {
@@ -32,6 +32,11 @@ const USerTable = (props) => {
 
   const columns = [
     {
+      title : 'Index',
+      dataIndex: 'index',
+      render: (text, record, index) => (page - 1) * limit + index + 1,
+    },
+    {
       title: 'Id',
       dataIndex: '_id',
       rowKey: '_id',
@@ -50,6 +55,20 @@ const USerTable = (props) => {
     {
       title: 'Name',
       dataIndex: 'username',
+    },
+    {
+      title: '',
+      dataIndex: 'avatar',
+      render: (avatar) => (
+        <img 
+          src={avatar} 
+          alt="avatar" 
+          style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover' }}
+          onError={(e) => {
+            e.target.src = 'https://via.placeholder.com/40x40?text=No+Image';
+          }}
+        />
+      ),
     },
     {
       title: 'Email',
@@ -81,7 +100,19 @@ const USerTable = (props) => {
   ];
 
   return <>
-    <Table columns={columns} dataSource={users} rowKey={"_id"} />
+    <Table
+    onChange={(pagination) => {
+        handleTableChange(pagination);
+    }}
+    pagination={{
+      current: page,
+      pageSize: limit,
+      total: total,
+      showSizeChanger: false,
+      showQuickJumper: false,
+      showTotal: (total, range) => `${range[0]}-${range[1]} trên ${total} items`,
+    }}
+     columns={columns} dataSource={users} rowKey={"_id"} />
     <UpdateUserModal
       isModalUpdateOpen={isModalUpdateOpen}
       setIsModalUpdateOpen={setIsModalUpdateOpen}

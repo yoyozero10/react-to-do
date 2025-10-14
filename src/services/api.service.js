@@ -1,23 +1,25 @@
 // import axios from "axios";
 import axios from "./axios.customize";
 
-const createUserAPI = (fullName, email, password, phone) => {
+const createUserAPI = (fullName, email, password, phone, avatar) => {
     const URL = "/api/v1/users";
     const data = {
          fullName: fullName,
          email: email,
          password: password,
-         phone: phone
+         phone: phone,
+         avatar: avatar
         };
     return axios.post(URL, data);
 }
 
-const updateUserAPI = (_id, username, email) => {
+const updateUserAPI = (_id, username, email, avatar) => {
     const URL = `/api/users/${_id}`;
     const data = {
          _id: _id,
          username: username,
-         email: email
+         email: email,
+         avatar: avatar
         };
     console.log('Making PUT request to:', URL);
     console.log('Request data:', data);
@@ -29,8 +31,8 @@ const deleteUserAPI = (_id) => {
     return axios.delete(URL);
 }
 
-const fetchAllUsersAPI = () => {
-    const URL = "/api/users";
+const fetchAllUsersAPI = (page, limit) => {
+    const URL = `/api/users/paginate?page=${page}&limit=${limit}`;
     return axios.get(URL);
 }
 

@@ -1,6 +1,7 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import { Modal } from 'antd';
-import { createUserAPI, updateUserAPI } from '../../services/api.service';
+import { updateUserAPI } from '../../services/api.service';
 import { Input, notification } from 'antd';
 
 
@@ -10,6 +11,7 @@ const UpdateUserModal = (props) => {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [phone, setPhone] = React.useState('');
+    const [avatar, setAvatar] = React.useState('');
     const { dataUpdate, setDataUpdate, loadUsers } = props;
 
     React.useEffect(() => {
@@ -18,6 +20,7 @@ const UpdateUserModal = (props) => {
             setEmail(dataUpdate.email);
             setPhone(dataUpdate.phone);
             setPassword(dataUpdate.password);
+            setAvatar(dataUpdate.avatar || '');
 
         }
     }, [dataUpdate]);
@@ -26,9 +29,10 @@ const UpdateUserModal = (props) => {
             console.log('Updating user with data:', {
                 _id: dataUpdate._id,
                 username: fullName,
-                email
+                email,
+                avatar
             });
-            const res = await updateUserAPI(dataUpdate._id, fullName, email);
+            const res = await updateUserAPI(dataUpdate._id, fullName, email, avatar);
             console.log('Update response:', res);
             await loadUsers();
             if (res.data) {
@@ -40,6 +44,7 @@ const UpdateUserModal = (props) => {
                 setEmail('');
                 setPassword('');
                 setPhone('');
+                setAvatar('');
                 setIsModalUpdateOpen(false);
             }
         } catch (error) {
@@ -82,6 +87,11 @@ const UpdateUserModal = (props) => {
                     <Input onChange={(e) => setPhone(e.target.value)}
                         placeholder="Enter your phone number" value={phone} />
                 </div> */}
+                <div>
+                    <span>Avatar URL</span>
+                    <Input onChange={(e) => setAvatar(e.target.value)}
+                        placeholder="Enter avatar URL" value={avatar} />
+                </div>
             </div>
         </Modal>
     )

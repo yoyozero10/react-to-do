@@ -1,13 +1,15 @@
 import { Drawer } from 'antd';
 
+
 const ViewUserDetail = (props) => {
-    const { isDetailOpen, setIsDetailOpen, dataDetail, setDataDetail } = props;
+    const { isDetailOpen, setIsDetailOpen, dataDetail } = props;
     const onClose = () => {
         setIsDetailOpen(false);
     };
     return (
 
             <Drawer
+                width={"35vw"}
                 title="User Detail"
                 closable={{ 'aria-label': 'Close Button' }}
                 onClose={onClose}
@@ -16,6 +18,10 @@ const ViewUserDetail = (props) => {
                 <p>Full Name: {dataDetail.username}</p>
                 <p>Email: {dataDetail.email}</p>
                 <p>Phone: {dataDetail.phone}</p>
+                <div>
+                    <label>Avatar:</label>
+                    <img style={{ width: '100px', height: '100px' }} src={dataDetail.avatar} alt="" />
+                </div>
             </Drawer>
 
     )
