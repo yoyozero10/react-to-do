@@ -36,4 +36,24 @@ const fetchAllUsersAPI = (page, limit) => {
     return axios.get(URL);
 }
 
-export { createUserAPI, updateUserAPI, fetchAllUsersAPI, deleteUserAPI }
+const registerUserAPI = (username,email,password) => {
+    const URL = "/api/auth/register ";
+    const data = {
+        username: username,
+        email: email,
+        password: password
+    };
+    return axios.post(URL,data);
+}
+
+const loginUserAPI = (email,password_hash, password) => {
+    const URL = "/api/auth/login";
+    const data = {
+        email: email,
+        password_hash: password_hash,
+        password: password
+    };
+    return axios.post(URL, data);
+}
+
+export { createUserAPI, updateUserAPI, fetchAllUsersAPI, deleteUserAPI, registerUserAPI, loginUserAPI }
