@@ -5,6 +5,8 @@ import { loginUserAPI } from '../services/api.service';
 import { useNavigate } from 'react-router-dom';
 import { Row, Col } from 'antd';
 import { useState } from 'react';
+import { AuthContext } from '../components/context/auth.context';
+import { useContext } from 'react';
 
 const { Title } = Typography;
 
@@ -12,15 +14,16 @@ const LoginPage = () => {
     const [form] = Form.useForm();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
-
+    const { setUser } = useContext(AuthContext);
     const onFinish = async (values) => {
         try {
             setLoading(true);
-            // Thêm delay 3 giây để dễ quan sát loading state
             await new Promise(resolve => setTimeout(resolve, 1750));
-            await loginUserAPI(values.email, values.password_hash, values.password);
+            const res = await loginUserAPI(values.email, values.password_hash, values.password);
             message.success('Đăng nhập thành công!');
+            localStorage.setItem('token', res.data.accessToken);
             setLoading(false);
+            setUser(res.data.user);
             form.resetFields();
             navigate('/');
         } catch (error) {
