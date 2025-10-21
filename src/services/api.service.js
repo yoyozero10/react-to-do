@@ -21,8 +21,6 @@ const updateUserAPI = (_id, username, email, avatar) => {
          email: email,
          avatar: avatar
         };
-    console.log('Making PUT request to:', URL);
-    console.log('Request data:', data);
     return axios.put(URL, data);
 }
 
@@ -56,4 +54,49 @@ const loginUserAPI = (email,password_hash, password) => {
     return axios.post(URL, data);
 }
 
-export { createUserAPI, updateUserAPI, fetchAllUsersAPI, deleteUserAPI, registerUserAPI, loginUserAPI }
+const getUserInforAPI = () => {
+    const URL = "/api/auth/account";
+    return axios.get(URL);
+}
+
+const logoutUserAPI = () => {
+    const URL = "/api/auth/logout";
+    return axios.post(URL);
+}
+
+const fetchAllBooksAPI = (page, limit) => {
+    const URL = `/api/books/paginate?page=${page}&limit=${limit}`;
+    return axios.get(URL);
+}
+
+const deleteBookAPI = (_id) => {
+    const URL = `/api/books/${_id}`;
+    return axios.delete(URL);
+}
+
+const createBookAPI = (title, author, description, price, image) => {
+    const URL = "/api/books";
+    const data = {
+        title: title,
+        author: author,
+        description: description,
+        price: price,
+        image: image
+    };
+    return axios.post(URL, data);
+}
+
+const updateBookAPI = (_id, title, author, price, image, description) => {
+    const URL = `/api/books/${_id}`;
+    const data = {
+        _id: _id,
+        title: title,
+        author: author,
+        price: price,
+        image: image,
+        description: description
+    };
+    return axios.put(URL, data);
+}
+
+export { createUserAPI, updateUserAPI, fetchAllUsersAPI, deleteUserAPI, registerUserAPI, loginUserAPI, getUserInforAPI, logoutUserAPI, fetchAllBooksAPI, createBookAPI, deleteBookAPI,updateBookAPI   }        

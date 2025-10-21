@@ -82,7 +82,6 @@ const USerTable = (props) => {
           <EditOutlined onClick={() => {
             setDataUpdate(record);
             setIsModalUpdateOpen(true);
-            console.log(record);
           }} style={{ color: 'blue', cursor: 'pointer' }} />
           <Popconfirm
             placement='left'

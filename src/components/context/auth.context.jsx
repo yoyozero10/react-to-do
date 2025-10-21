@@ -1,5 +1,4 @@
-import { createContext } from "react";
-import { useState } from "react";
+import { createContext, useState } from "react";
 
 export const AuthContext = createContext({
     user: {
@@ -7,17 +6,21 @@ export const AuthContext = createContext({
         "username": "",
         "email": ""
     },
+    setUser: () => {},
 });
 
-export const AuthWrapper = (props) => {
+export const AuthWrapper = ({ children }) => {
     const [user, setUser] = useState({
         "_id": "",
         "username": "",
         "email": ""
     });
+    
+    const [isAppLoading, setIsAppLoading] = useState(true);
+
     return (
-        <AuthContext.Provider value={{ user, setUser }}>
-            {props.children}
+        <AuthContext.Provider value={{ user, setUser, isAppLoading, setIsAppLoading }}>
+            {children}
         </AuthContext.Provider>
-    )
-}
+    );
+};

@@ -26,14 +26,7 @@ const UpdateUserModal = (props) => {
     }, [dataUpdate]);
     const handleSubmit = async () => {
         try {
-            console.log('Updating user with data:', {
-                _id: dataUpdate._id,
-                username: fullName,
-                email,
-                avatar
-            });
             const res = await updateUserAPI(dataUpdate._id, fullName, email, avatar);
-            console.log('Update response:', res);
             await loadUsers();
             if (res.data) {
                 notification.success({

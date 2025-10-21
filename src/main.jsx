@@ -6,13 +6,14 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import RegisterPage from './pages/register.jsx';
-import LoginPae from './pages/login.jsx';
+import LoginPage from './pages/login.jsx';
 import UsersPage from './pages/users.jsx';
 import BookPage from './pages/book.jsx';
 import './styles/global.css'
 import ToDoApp from './components/todo/ToDoApp.jsx';
 import ErrorPage from './pages/error.jsx';
 import { AuthWrapper } from './components/context/auth.context';
+import PrivateRoute from './pages/private.route.jsx';
 
 const router = createBrowserRouter([
   {
@@ -26,11 +27,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/users",
-        element: <UsersPage></UsersPage>,
+        element: <PrivateRoute><UsersPage></UsersPage></PrivateRoute>,
       },
       {
         path: "/books",
-        element: <BookPage></BookPage>,
+        element: <PrivateRoute><BookPage/></PrivateRoute>,
       }
     ]
   },
@@ -40,7 +41,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <LoginPae></LoginPae>,
+    element: <LoginPage></LoginPage>,
   },
 ]);
 
