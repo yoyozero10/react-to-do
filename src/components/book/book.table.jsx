@@ -11,9 +11,12 @@ const BookTable = (props) => {
   const [dataUpdate, setDataUpdate] = React.useState({});
   const [dataDetail, setDataDetail] = React.useState({});
   const [isDetailOpen, setIsDetailOpen] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
 
   React.useEffect(() => {
+    setLoading(true);
     loadBooks();
+    setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, limit]);
 
@@ -122,6 +125,7 @@ const BookTable = (props) => {
         columns={columns}
         dataSource={books}
         rowKey={"_id"}
+        loading={loading}
       />
       <UpdateBookModal
         isModalUpdateOpen={isModalUpdateOpen}

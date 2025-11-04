@@ -6,11 +6,22 @@ import { AuthContext } from '../context/auth.context';
 import { useContext } from 'react';
 import { logoutUserAPI } from '../../services/api.service';
 import { message } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 const Header = () => {
+    const location = useLocation();
     const { user, setUser } = useContext(AuthContext);
     const navigate = useNavigate();
     const [current, setCurrent] = useState('mail');
+    useEffect(() => {
+        if(location && location.pathname) {
+            const allRoutes = ["users","books","profile","logout",""];
+            const route = location.pathname.replace("/","");
+            if(allRoutes.includes(route)) {
+                setCurrent(route);
+            }
+        }
+    }, [location]);
     const onClick = e => {
         setCurrent(e.key);
     };
